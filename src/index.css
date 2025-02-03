@@ -9,12 +9,14 @@
     padding: 0;
     box-sizing: border-box;
   }
-
+/* ColorGuessingGame.css */
 .game-container {
   min-height: 100vh;
-  background: linear-gradient(to bottom right, #1a202c, #2d3748);
+  background: linear-gradient(to bottom, #111827, #000000);
   color: white;
   padding: 1rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .game-wrapper {
@@ -23,6 +25,151 @@
   padding-top: 2rem;
 }
 
+.game-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.game-header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #FACC15;
+}
+
+.game-instructions {
+  font-size: 1.125rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.score-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.score {
+  font-size: 1.25rem;
+}
+
+.score span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #a78bfa;
+}
+
+.new-game-button {
+  padding: 0.5rem 1rem;
+  background-color: #FACC15;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.new-game-button:hover {
+  background-color: #6d28d9;
+}
+
 .target-container {
   margin-bottom: 2rem;
+}
+
+.color-display {
+  width: 12rem;
+  height: 12rem;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.game-status {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  height: 2rem;
+}
+
+.game-status.bounce {
+  animation: bounce 0.5s ease infinite;
+}
+
+.game-status.correct {
+  color: #34d399;
+}
+
+.game-status.wrong {
+  color: #f87171;
+}
+
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* semi-transparent white */
+  backdrop-filter: blur(20px); /* adds blur to the background */
+  border-radius: 10px; /* rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle shadow for depth */
+}
+
+
+@media (min-width: 768px) {
+  .color-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.color-option {
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.color-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.color-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .game-header h1 {
+    font-size: 2rem;
+  }
+
+  .color-display {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .score-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
