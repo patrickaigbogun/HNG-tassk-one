@@ -75,7 +75,10 @@ const ColorGuessingGame = () => {
             </p>
             <button
               data-testid="newGameButton"
-              onClick={startNewGame}
+              onClick={() => {
+                startNewGame();
+                setScore(0); 
+              }}
               className="new-game-button"
             >
               New Game
