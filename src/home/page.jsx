@@ -1,11 +1,13 @@
-import  { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import '../index.css';
 
 const ColorGuessingGame = () => {
   const [targetColor, setTargetColor] = useState('');
   const [colorOptions, setColorOptions] = useState([]);
+  const [score, setScore] = useState(0);
+  const [gameStatus, setGameStatus] = useState('');
   const [showAnimation, setShowAnimation] = useState(false);
-
+  const [isCorrect, setIsCorrect] = useState(false);
 
   const colors = [
     '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', '#D4A5A5',
@@ -28,7 +30,14 @@ const ColorGuessingGame = () => {
     return options.sort(() => Math.random() - 0.5);
   };
 
- 
+  const startNewGame = () => {
+    const newTargetColor = getRandomColor();
+    setTargetColor(newTargetColor);
+    setColorOptions(generateColorOptions(newTargetColor));
+    setGameStatus('');
+    setShowAnimation(false);
+  };
+
   const handleColorGuess = (color) => {
     setShowAnimation(true);
     setIsCorrect(color === targetColor);
@@ -52,27 +61,28 @@ const ColorGuessingGame = () => {
     startNewGame();
   }, []);
 
-//     setShowAnimation(true);
-//     setIsCorrect(color === targetColor);
-    
-//     if (color === targetColor) {
-//       setScore(prevScore => prevScore + 1);
-//       setGameStatus('Correct! 🎉');
-//     } else {
-//       setGameStatus('Wrong guess! Try again 😅');
-//     }
-
-//     setTimeout(() => {
-//       setShowAnimation(false);
-//       if (color === targetColor) {
-//         startNewGame();
-//       }
-//     }, 1500);
-//   }
-
   return (
     <div className="game-container">
       <div className="game-wrapper">
+        <div className="game-header">
+          <h1>Color Guessing Game</h1>
+          <p data-testid="gameInstructions" className="game-instructions">
+            Guess the correct color from the options below!
+          </p>
+          <div className="score-container">
+            <p className="score">
+              Score: <span data-testid="score">{score}</span>
+            </p>
+            <button
+              data-testid="newGameButton"
+              onClick={startNewGame}
+              className="new-game-button"
+            >
+              New Game
+            </button>
+          </div>
+        </div>
+
         <div className="target-container">
           <div
             data-testid="colorBox"
@@ -80,6 +90,16 @@ const ColorGuessingGame = () => {
             style={{ backgroundColor: targetColor }}
           />
         </div>
+
+        <div
+          data-testid="gameStatus"
+          className={`game-status ${showAnimation ? 'bounce' : ''} ${
+            isCorrect ? 'correct' : 'wrong'
+          }`}
+        >
+          {gameStatus}
+        </div>
+
         <div className="color-options">
           {colorOptions.map((color, index) => (
             <button
