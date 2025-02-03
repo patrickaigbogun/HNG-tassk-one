@@ -1,8 +1,11 @@
-import  { useState} from 'react';
+import  { useState, useEffect} from 'react';
 import '../index.css';
 
 const ColorGuessingGame = () => {
   const [targetColor, setTargetColor] = useState('');
+  const [colorOptions, setColorOptions] = useState([]);
+  const [showAnimation, setShowAnimation] = useState(false);
+
 
   const colors = [
     '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', '#D4A5A5',
@@ -26,7 +29,28 @@ const ColorGuessingGame = () => {
   };
 
  
+  const handleColorGuess = (color) => {
+    setShowAnimation(true);
+    setIsCorrect(color === targetColor);
+    
+    if (color === targetColor) {
+      setScore(prevScore => prevScore + 1);
+      setGameStatus('Correct! 🎉');
+    } else {
+      setGameStatus('Wrong guess! Try again 😅');
+    }
 
+    setTimeout(() => {
+      setShowAnimation(false);
+      if (color === targetColor) {
+        startNewGame();
+      }
+    }, 1500);
+  };
+
+  useEffect(() => {
+    startNewGame();
+  }, []);
 
 //     setShowAnimation(true);
 //     setIsCorrect(color === targetColor);
@@ -55,6 +79,18 @@ const ColorGuessingGame = () => {
             className="color-display"
             style={{ backgroundColor: targetColor }}
           />
+        </div>
+        <div className="color-options">
+          {colorOptions.map((color, index) => (
+            <button
+              key={index}
+              data-testid="colorOption"
+              onClick={() => handleColorGuess(color)}
+              className="color-option"
+              style={{ backgroundColor: color }}
+              disabled={showAnimation}
+            />
+          ))}
         </div>
       </div>
     </div>
