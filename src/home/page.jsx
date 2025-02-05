@@ -15,20 +15,58 @@ const ColorGuessingGame = () => {
     '#E67E22', '#95A5A6', '#D35400', '#27AE60', '#8E44AD', '#2980B9'
   ];
 
+  const hexToRgb = (hex) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  };
+
+  const rgbToHex = (r, g, b) => {
+    const componentToHex = (c) => {
+      const hex = Math.min(255, Math.max(0, Math.round(c))).toString(16);
+      return hex.length === 1 ? "0" + hex : hex;
+    };
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  };
+
+  const generateSimilarColor = (baseColor) => {
+    const rgb = hexToRgb(baseColor);
+    if (!rgb) return baseColor;
+
+    const variation = 10;
+    const newR = rgb.r + (Math.random() * variation * 2 - variation);
+    const newG = rgb.g + (Math.random() * variation * 2 - variation);
+    const newB = rgb.b + (Math.random() * variation * 2 - variation);
+
+    return rgbToHex(newR, newG, newB);
+  };
+
   const getRandomColor = () => {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
   const generateColorOptions = (target) => {
-    const options = [target];
+
+    const options = [
+      target,
+      generateSimilarColor(target),
+      generateSimilarColor(target)
+    ];
+
+    // Add three random different colors
     while (options.length < 6) {
       const color = getRandomColor();
-      if (!options.includes(color)) {
+      if (!options.includes(color) && color !== target) {
         options.push(color);
       }
     }
+
     return options.sort(() => Math.random() - 0.5);
   };
+
 
   const startNewGame = () => {
     const newTargetColor = getRandomColor();
@@ -60,7 +98,6 @@ const ColorGuessingGame = () => {
   useEffect(() => {
     startNewGame();
   }, []);
-
   return (
     <div className="game-container">
       <div className="game-wrapper">
